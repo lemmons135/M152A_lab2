@@ -32,8 +32,9 @@ always @(*) begin
         end
         else if (E_in != 3'b111) begin
         // Round Up Exponente
-            // Ifthe fraction is already at its maximum, we need to round up the exponent
-            F = 4'b0000; 
+            // If the fraction is already at its maximum, we need to round up the exponent
+            F = 4'b1000; // 1000 becaise we add 1 to 1111, which gives us 10000,
+            // then from 10000 we right shift to get 1000, and add 1 to the exponent
             E = E_in + 1; // Increment exponent
         end  
         // No Rounding Possible
@@ -46,5 +47,10 @@ always @(*) begin
     end
     // --------------- ROUND DOWN -------------
     else begin
+        // If the fifth bit is 0, we round down, which means we keep E and F the same
+        F = F_in; // Keep fraction the same
+        E = E_in; // Keep exponent the same
     end
 end
+
+endmodule

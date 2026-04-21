@@ -21,10 +21,18 @@ module fpcvt (
     output reg[3:0] F
 );
 
-always @(1)
+always @(1) begin
     //TODO: implement combinational fpcvt logic
     S = 1'b0;
     E = 3'b0;
     F = 4'b0;
+
+    signed_magnitude sm(D);
+    extract ex(sm.M);
+    rounding r(ex.F, ex.E);
+    S = sm.S;
+    E = r.E;
+    F = r.F;
+end
 
 endmodule
