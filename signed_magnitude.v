@@ -1,9 +1,10 @@
 module signed_magnitude (
-    input wire [11:0] D, // 12-bit signed magnitude input
-    output wire S, // Sign bit (1 for negative, 0 for positive)
-    output wire [3:0] E, // Exponent (4 bits)
-    output wire [4:0] F // Fraction/significant/mantissa (5 bits)
+    input reg [11:0] D, // 12-bit signed magnitude input
+    output reg S, // Sign bit (1 for negative, 0 for positive)
+    output reg [10:0] M // Magnitude (11 bits for the absolute value of the number)
 );
-    assign S = D[11];
-    assign E = D[10:7];
-    assign F = D[6:2];
+
+always @(*) begin
+    S = D[11]; // The sign bit is the most significant bit
+    M = D[10:0]; // The magnitude is the remaining 11 bits
+end
