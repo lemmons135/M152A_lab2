@@ -9,17 +9,17 @@
  */
 
 module signed_magnitude (
-    input [11:0] D, // 12-bit signed magnitude input
-    output reg S, // Sign bit (1 for negative, 0 for positive)
-    output reg [10:0] M // Magnitude (11 bits for the absolute value of the number)
+    input [11:0] D,      // 12-bit two's complement input
+    output reg S,        // Sign bit
+    output reg [11:0] M  // 12-bit Magnitude
 );
 
 always @(*) begin
     S = D[11]; // The sign bit is the most significant bit
     if (S) begin
-        M = ~D[10:0] + 1; // If negative, take the two's complement to get the magnitude
+        M = ~D + 1'b1; // If negative, take the two's complement to get the magnitude
     end else begin
-        M = D[10:0]; // if positive, the magnitude is the remaining 11 bits
+        M = D; // if positive, the magnitude is the remaining 11 bits
     end
 end
 
