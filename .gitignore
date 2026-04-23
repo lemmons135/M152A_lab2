@@ -1,0 +1,6 @@
+# executables
+run
+test
+
+# macOS
+.DS_Store
