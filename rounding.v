@@ -13,9 +13,9 @@
 `include "extract.v"
 
 module rounding (
-    input reg [2:0] E_in, //3 bit exponent
-    input reg [3:0] F_in, // 4 bit fraction
-    input reg fifth_bit, // fifth bit after the last leading zero
+    input [2:0] E_in, //3 bit exponent
+    input [3:0] F_in, // 4 bit fraction
+    input fifth_bit, // fifth bit after the last leading zero
     output reg [2:0] E,
     output reg [3:0] F
 );

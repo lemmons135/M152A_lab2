@@ -8,7 +8,8 @@
  *          E_T[2:0]        Final (rounded) exponent of float, based on fifth bit. Represents number of leading zeroes in linear encoding
  *          F_T[3:0]        Final (rounded) significand of float, based on fifth bit
  */
-
+ 
+`include "fpcvt.v"
 
 module fpcvt_t;    //testbench doesn't take any inputs!
 
