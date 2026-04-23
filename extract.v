@@ -10,12 +10,11 @@
  */
  
 module extract (
-    input reg [11:0] M,  
+    input [11:0] M,  
     output reg [2:0] E_in,
     output reg [3:0] F_in,
     output reg fifth_bit
 );
-//`include "signed_magnitude.v"
 
 always @(*) begin
         // We use casex to look for the first '1' bit

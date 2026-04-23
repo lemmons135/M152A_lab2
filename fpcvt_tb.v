@@ -8,35 +8,62 @@
  *          E_T[2:0]        Final (rounded) exponent of float, based on fifth bit. Represents number of leading zeroes in linear encoding
  *          F_T[3:0]        Final (rounded) significand of float, based on fifth bit
  */
- 
+`timescale 1ns / 1ps
+
+`include "signed_magnitude.v"
+`include "extract.v"
+`include "rounding.v"
 `include "fpcvt.v"
 
-module fpcvt_t;    //testbench doesn't take any inputs!
+module fpcvt_tb;
 
-//inputs
-reg [11:0] D_T;
+    reg [11:0] D;
+    wire S;
+    wire [2:0] E;
+    wire [3:0] F;
+    
+    // Variables for decimal calculation
+    real float_val;
 
-//outputs
-reg S_T;
-reg [2:0] E_T;
-reg [3:0] F_T;
+    // Instantiate the converter
+    fpcvt uut (
+        .D(D), 
+        .S(S), 
+        .E(E), 
+        .F(F)
+    );
 
-//make an instance of our top-level compression module
-fpcvt UUT   (.D(D_T),
-             .S(S_T),
-             .E(E_T),
-             .F(F_T));
+    initial begin
+        $display("-------------------------------------------------------------------------");
+        $display("Input (Dec) | Hex  | S | E | F | Binary F | Float Decimal (F * 2^E)");
+        $display("-------------------------------------------------------------------------");
 
-integer i;
+        // Helper task to run a test and print results
+        // This avoids repeating the calculation logic
+        run_test(12'd0);      // Zero
+        run_test(12'd15);     // Small positive (No rounding)
+        run_test(12'd31);     // Boundary case
+        run_test(12'd63);     // Should see rounding here
+        run_test(12'd1023);   // Large positive
+        run_test(-12'd1);     // -1 in 2's complement
+        run_test(-12'd500);   // Large negative
+        run_test(12'h7FF);    // Max positive 12-bit
 
-//TODO: write test cases
-
-initial
-    for (i = 21'h1FFFFF; i >= 0; i = i - 1)
-    begin
-        //TODO: test test cases
-        D_T = D_T + 1;
+        $finish;
     end
-    $finish;
+
+    task run_test(input [11:0] test_val);
+        begin
+            D = test_val;
+            #10;
+            // Formula: F * (2^E). We use S to determine the sign.
+            // 1.0 * (1 << E) is a quick way to get 2^E in Verilog
+            float_val = F * (1.0 * (1 << E));
+            if (S) float_val = -float_val;
+
+            $display("%d\t    | %h  | %b | %d | %d | %b     | %f", 
+                     $signed(D), D, S, E, F, F, float_val);
+        end
+    endtask
 
 endmodule

@@ -10,8 +10,6 @@
  *          F[3:0]          Final (rounded) significand of float, based on fifth bit
  */
 
-`include "extract.v"
-
 module rounding (
     input [2:0] E_in, //3 bit exponent
     input [3:0] F_in, // 4 bit fraction

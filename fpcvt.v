@@ -10,29 +10,54 @@
  *          F[3:0]          Final (rounded) significand of float, based on fifth bit
  */
 
-`include "extract.v"
-`include "rounding.v"
-`include "signed_magnitude.v"
-
 module fpcvt (
-    input reg [11:0] D,
-    output reg S,
-    output reg[2:0] E,
-    output reg[3:0] F
+    input [11:0] D,
+    output S,
+    output [2:0] E,
+    output [3:0] F
 );
+    // Helper wires to connect the submodules
+    wire [11:0] mag;
+    wire [2:0] e_pre_round;
+    wire [3:0] f_pre_round;
+    wire fifth_bit;
 
-always @(1) begin
-    //TODO: implement combinational fpcvt logic
-    S = 1'b0;
-    E = 3'b0;
-    F = 4'b0;
+    signed_magnitude sm_insn (
+        // Inputs
+        // D is the input to signed magnitude
+        .D(D), 
+        // Outputs
+        // S is the sign bit, M is the magnitude
+        .S(S), 
+        .M(mag)
+    );
 
-    signed_magnitude sm(D);
-    extract ex(sm.M);
-    rounding r(ex.F, ex.E);
-    S = sm.S;
-    E = r.E;
-    F = r.F;
-end
+    extract ex_insn (
+        // Inputs
+        // mag is the magnitude output from signed magnitude
+        .M(mag),
+        // Outputs
+        // e_pre_round is the exponent before rounding, 
+        // f_pre_round is the fraction before rounding, 
+        // and fifth_bit is the bit that determines rounding
+        .E_in(e_pre_round),
+        .F_in(f_pre_round),
+        .fifth_bit(fifth_bit)
+    );
+
+    rounding r_insn (
+        // Inputs
+        // e_pre_round is the exponent before rounding,
+        // f_pre_round is the fraction before rounding,
+        // and fifth_bit is the bit that determines rounding
+        .E_in(e_pre_round),
+        .F_in(f_pre_round),
+        .fifth_bit(fifth_bit),
+        // Outputs
+        // E is the final exponent after rounding, 
+        // and F is the final fraction after rounding
+        .E(E),
+        .F(F)
+    );
 
 endmodule
