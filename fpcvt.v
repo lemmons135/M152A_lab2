@@ -15,24 +15,40 @@
 `include "signed_magnitude.v"
 
 module fpcvt (
-    input reg [11:0] D,
-    output reg S,
-    output reg[2:0] E,
-    output reg[3:0] F
+    input [11:0] D,
+    output S,          // Removed 'reg' because these are driven by module outputs
+    output [2:0] E,
+    output [3:0] F
 );
 
-always @(1) begin
-    //TODO: implement combinational fpcvt logic
-    S = 1'b0;
-    E = 3'b0;
-    F = 4'b0;
+wire [10:0] mag_val;
+wire        sign_val;
+wire [2:0]  extracted_E;
+wire [3:0]  extracted_F;
+wire        extra_bit;
 
-    signed_magnitude sm(D);
-    extract ex(sm.M);
-    rounding r(ex.F, ex.E);
-    S = sm.S;
-    E = r.E;
-    F = r.F;
-end
+signed_magnitude sm (
+    .D(D),
+    .S(sign_val),
+    .M(mag_val)
+);
+
+extract ex (
+    .M({1'b0, mag_val}), // Concatenating a 0 to make it 12-bit for your extract input
+    .E_in(extracted_E),
+    .F_in(extracted_F),
+    .fifth_bit(extra_bit)
+);
+
+rounding r (
+    .E_in(extracted_E),
+    .F_in(extracted_F),
+    .fifth_bit(extra_bit),
+    .E(E),
+    .F(F)
+);
+
+// 3. Drive the final sign output
+assign S = sign_val;
 
 endmodule

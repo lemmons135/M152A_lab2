@@ -8,7 +8,7 @@
  *          E_T[2:0]        Final (rounded) exponent of float, based on fifth bit. Represents number of leading zeroes in linear encoding
  *          F_T[3:0]        Final (rounded) significand of float, based on fifth bit
  */
-
+`timescale 1ns / 1ps
 
 module fpcvt_t;    //testbench doesn't take any inputs!
 
@@ -16,9 +16,9 @@ module fpcvt_t;    //testbench doesn't take any inputs!
 reg [11:0] D_T;
 
 //outputs
-reg S_T;
-reg [2:0] E_T;
-reg [3:0] F_T;
+wire S_T;
+wire [2:0] E_T;
+wire [3:0] F_T;
 
 //make an instance of our top-level compression module
 fpcvt UUT   (.D(D_T),
@@ -31,11 +31,12 @@ integer i;
 //TODO: write test cases
 
 initial
-    for (i = 21'h1FFFFF; i >= 0; i = i - 1)
+    for (i = 8'hFF; i >= 0; i = i - 1)
     begin
         //TODO: test test cases
+        $display("Test case %d", i);
         D_T = D_T + 1;
     end
-    $finish;
+
 
 endmodule

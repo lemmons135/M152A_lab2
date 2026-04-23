@@ -10,7 +10,7 @@
  */
  
 module extract (
-    input reg [11:0] M,  
+    input [11:0] M,  
     output reg [2:0] E_in,
     output reg [3:0] F_in,
     output reg fifth_bit
@@ -54,8 +54,8 @@ always @(*) begin
             end
         endcase
     end
+
 endmodule
+
 //output is extracted leading zeros for exponent, 
 //significand and fifth bit for rounding 
-
-

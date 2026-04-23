@@ -9,7 +9,7 @@
  */
 
 module signed_magnitude (
-    input reg [11:0] D, // 12-bit signed magnitude input
+    input [11:0] D, // 12-bit signed magnitude input
     output reg S, // Sign bit (1 for negative, 0 for positive)
     output reg [10:0] M // Magnitude (11 bits for the absolute value of the number)
 );
@@ -23,4 +23,4 @@ always @(*) begin
     end
 end
 
-
+endmodule
