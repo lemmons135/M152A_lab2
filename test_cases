@@ -1,3 +1,15 @@
-0010
-000000000000 00000000
-111111111111 11111111
+1110
+000000000000 00000000    // Case 1: zero (smallest possible value)
+000110100110 01011101    // Case 2: 422 (spec example, E=5, F=13)
+111001011010 11011101    // Case 3: -422 (spec example, negation then count zeroes)
+000000101100 00101011    // Case 4: 44 (spec rounding example, round down)
+000000101101 00101011    // Case 5: 45 (spec rounding example, round down)
+000000101110 00101100    // Case 6: 46 (spec rounding example, round up)
+000000101111 00001100    // Case 7: 47 (spec rounding example, round up)
+000001111101 01001000    // Case 8: 125 (spec "OOPS" example, F overflow to E+1)
+011111111111 01111111    // Case 9: 2047 (spec large encoding, saturate to max)
+100000000001 11111111    // Case 10: -2047 (negative large encoding, saturate to max)
+100000000000 11111111    // Case 11: -2048 (spec special case, handle 12-bit magnitude)
+111111111111 10000001    // Case 12: -1 (two's complement smallest negative)
+000000001111 00001111    // Case 13: 15 (max value for E=0, no fifth bit)
+011111000000 01111111    // Case 14: near max rounding (forces E=7 to stay E=7)
