@@ -21,7 +21,7 @@ module fpcvt (
     output [3:0] F
 );
 
-wire [10:0] mag_val;
+wire [11:0] mag_val;
 wire        sign_val;
 wire [2:0]  extracted_E;
 wire [3:0]  extracted_F;
@@ -34,7 +34,7 @@ signed_magnitude sm (
 );
 
 extract ex (
-    .M({1'b0, mag_val}), // Concatenating a 0 to make it 12-bit for your extract input
+    .M({mag_val}),
     .E_in(extracted_E),
     .F_in(extracted_F),
     .fifth_bit(extra_bit)
