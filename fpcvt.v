@@ -16,7 +16,7 @@
 
 module fpcvt (
     input [11:0] D,
-    output S,          // Removed 'reg' because these are driven by module outputs
+    output S, 
     output [2:0] E,
     output [3:0] F
 );
@@ -48,7 +48,6 @@ rounding r (
     .F(F)
 );
 
-// 3. Drive the final sign output
 assign S = sign_val;
 
 endmodule

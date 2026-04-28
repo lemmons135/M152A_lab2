@@ -29,15 +29,32 @@ fpcvt UUT   (.D(D_T),
 
 integer i;
 
-//TODO: write test cases
+//test cases
+reg [11:0] test_cases [0:1023]; //12 bits wide to hold 12-bit input
+integer num_tests;
+reg [7:0] expected_val;         //hold expected output bits
 
-initial
-    for (i = 8'hFF; i >= 0; i = i - 1)
-    begin
-        //TODO: test test cases
-        $display("Test case %d", i);
-        D_T = D_T + 1;
+initial begin
+    //NOTE: readmemb treats all whitespace as newlines, which means test_cases is 1D
+    //  and contains [<num tests>, <test 1 in>, <test 1 out>, ..., <test N in>, <test N out>]
+    $readmemb("test_cases", test_cases);
+    num_tests = test_cases[0];  //first line should indicate number of following lines in binary
+
+    $display("Running %0d tests...", num_tests);
+    
+    for (i = 1; i <= num_tests; i = i + 1) begin
+        // input is at (2*i - 1) and expected is at (2*i)
+        D_T          = test_cases[2*i - 1]; 
+        expected_val = test_cases[2*i][7:0]; 
+
+        #1; //wait for combinational logic
+        
+        if (S_T === expected_val[7] && E_T === expected_val[6:4] && F_T === expected_val[3:0]) begin
+            $display("%0d | %b | %b | %b%b%b | PASS", i, D_T, expected_val, S_T, E_T, F_T);
+        end else begin
+            $display("%0d | %b | %b | %b%b%b | FAIL", i, D_T, expected_val, S_T, E_T, F_T);
+        end
     end
-
+end
 
 endmodule
