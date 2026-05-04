@@ -10,9 +10,9 @@
  *          F[3:0]          Final (rounded) significand of float, based on fifth bit
  */
 
-`include "extract.v"
-`include "rounding.v"
-`include "signed_magnitude.v"
+// `include "extract.v"
+// `include "rounding.v"
+// `include "signed_magnitude.v"
 
 module fpcvt (
     input [11:0] D,

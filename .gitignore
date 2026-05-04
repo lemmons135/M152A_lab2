@@ -1,6 +1,7 @@
 # executables
 run
 test
+a.out
 
 # macOS
 .DS_Store

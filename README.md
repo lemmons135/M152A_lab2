@@ -11,7 +11,7 @@ brew install icarus-verilog
 Run this command in the root project directory to build and run fpcvt test bench:
 
 ```
-iverilog -o run tb/fpcvt_tb.v
+iverilog *.v tb/*.v
 ./run
 ```
 

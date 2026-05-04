@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "extract.v"
+// `include "extract.v"
 
 module extract_tb();
     // Inputs to the module
