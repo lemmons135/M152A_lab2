@@ -20,6 +20,11 @@ module extract (
 always @(*) begin
         // We use casex to look for the first '1' bit
         casex (M)
+            12'b1xxxxxxxxxxx: begin // case where M only has 1 leading 0's
+                E_in = 3'b111;
+                F_in = 4'b1111;
+                fifth_bit = 1'b0;
+            end            
             12'b01xxxxxxxxxx: begin // case where M only has 1 leading 0's
                 E_in = 3'b111;
                 F_in = M[10:7];
@@ -44,7 +49,16 @@ always @(*) begin
                 E_in = 3'b011;
                 F_in = M[6:3];
                 fifth_bit = M[2];
-      
+            end
+            12'b000001xxxxx: begin // case where M only has 6 leading 0's
+                E_in = 3'b010;
+                F_in = M[5:2];
+                fifth_bit = M[1];
+            end
+            12'b0000001xxxx: begin // case where M only has 7 leading 0's
+                E_in = 3'b001;
+                F_in = M[4:1];
+                fifth_bit = M[0];
             end
             // case where the Exponent 0 case (8 or more leading zeros)
             default: begin
