@@ -5,7 +5,7 @@
 000000101100 00101011    // Case 4: 44 (spec rounding example, round down)
 000000101101 00101011    // Case 5: 45 (spec rounding example, round down)
 000000101110 00101100    // Case 6: 46 (spec rounding example, round up)
-000000101111 00001100    // Case 7: 47 (spec rounding example, round up)
+000000101111 00101100    // Case 7: 47 (spec rounding example, round up)
 000001111101 01001000    // Case 8: 125 (spec "OOPS" example, F overflow to E+1)
 011111111111 01111111    // Case 9: 2047 (spec large encoding, saturate to max)
 100000000001 11111111    // Case 10: -2047 (negative large encoding, saturate to max)
